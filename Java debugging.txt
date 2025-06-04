@@ -1,0 +1,22 @@
+public int calculateDaysUntilDue(Date dueDate) {
+    return dueDate.getTime() - new Date().getTime();
+}
+
+has two main issues
+1. dueDate.getTime() - new Date().getTime() returns the difference in milliseconds, not days.
+2. The method is declared to return int, but the result of the time difference in milliseconds could be too large,
+   causing integer overflow. We should use long instead for safety.
+
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+public class DueDateCalculator {
+    public long calculateDaysUntilDue(Date dueDate) {
+        long diffInMillis = dueDate.getTime() - new Date().getTime();
+        return TimeUnit.MILLISECONDS.toDays(diffInMillis);
+    }
+}
+
+1.TimeUnit.MILLISECONDS.toDays(diffInMillis) converts milliseconds to days correctly.
+2.Changed return type from int to long to prevent overflow and be more accurate for long durations
+
